@@ -101,8 +101,8 @@ end
 % Prune . and ..
 %---------------------------
 [~, ~, tail] = cellfun(@fileparts, {Files(:).name}, 'UniformOutput', false);
-dottest = cellfun(@isempty, tail);
-Files(~dottest & [Files(:).isdir]) = [];
+dottest = cellfun(@(x) isempty(regexp(x, '\.+(\w+$)', 'once')), tail);
+Files(dottest & [Files(:).isdir]) = [];
 
 %---------------------------
 % Output
