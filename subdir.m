@@ -98,6 +98,13 @@ for ifolder = 1:length(pathfolders)
 end
 
 %---------------------------
+% Prune . and ..
+%---------------------------
+[~, ~, tail] = cellfun(@fileparts, {Files(:).name}, 'UniformOutput', false);
+dottest = cellfun(@isempty, tail);
+Files(~dottest & [Files(:).isdir]) = [];
+
+%---------------------------
 % Output
 %---------------------------
     
