@@ -54,8 +54,8 @@ function varargout = subdir(varargin)
 % Get folder and filter
 %---------------------------
 
-error(nargchk(0,1,nargin));
-error(nargoutchk(0,1,nargout));
+narginchk(0,1);
+nargoutchk(0,1);
 
 if nargin == 0
     folder = pwd;
