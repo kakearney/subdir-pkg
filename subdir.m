@@ -82,7 +82,7 @@ end
 %---------------------------
 
 pathstr = genpath(folder);
-seplocs = findstr(pathstr, pathsep);
+seplocs = strfind(pathstr, pathsep);
 loc1 = [1 seplocs(1:end-1)+1];
 loc2 = seplocs(1:end)-1;
 pathfolders = arrayfun(@(a,b) pathstr(a:b), loc1, loc2, 'UniformOutput', false);
