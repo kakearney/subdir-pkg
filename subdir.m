@@ -75,6 +75,9 @@ else
     else
         filter = [name ext];
     end
+    if ~isdir(folder)
+        error('Folder (%s) not found', folder);
+    end
 end
 
 %---------------------------
@@ -100,9 +103,12 @@ end
 %---------------------------
 % Prune . and ..
 %---------------------------
-[~, ~, tail] = cellfun(@fileparts, {Files(:).name}, 'UniformOutput', false);
-dottest = cellfun(@(x) isempty(regexp(x, '\.+(\w+$)', 'once')), tail);
-Files(dottest & [Files(:).isdir]) = [];
+
+if ~isempty(Files)
+    [~, ~, tail] = cellfun(@fileparts, {Files(:).name}, 'UniformOutput', false);
+    dottest = cellfun(@(x) isempty(regexp(x, '\.+(\w+$)', 'once')), tail);
+    Files(dottest & [Files(:).isdir]) = [];
+end
 
 %---------------------------
 % Output
