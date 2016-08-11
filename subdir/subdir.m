@@ -85,10 +85,8 @@ end
 %---------------------------
 
 pathstr = genpath(folder);
-seplocs = strfind(pathstr, pathsep);
-loc1 = [1 seplocs(1:end-1)+1];
-loc2 = seplocs(1:end)-1;
-pathfolders = arrayfun(@(a,b) pathstr(a:b), loc1, loc2, 'UniformOutput', false);
+pathfolders = regexp(pathstr, pathsep, 'split');  % Same as strsplit without the error checking
+pathfolders = pathfolders(~cellfun('isempty', pathfolders));  % Remove any empty cells
 
 Files = [];
 pathandfilt = fullfile(pathfolders, filter);
