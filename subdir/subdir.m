@@ -91,8 +91,9 @@ loc2 = seplocs(1:end)-1;
 pathfolders = arrayfun(@(a,b) pathstr(a:b), loc1, loc2, 'UniformOutput', false);
 
 Files = [];
-for ifolder = 1:length(pathfolders)
-    NewFiles = dir(fullfile(pathfolders{ifolder}, filter));
+pathandfilt = fullfile(pathfolders, filter);
+for ifolder = 1:length(pathandfilt)
+    NewFiles = dir(pathandfilt{ifolder});
     if ~isempty(NewFiles)
         fullnames = cellfun(@(a) fullfile(pathfolders{ifolder}, a), {NewFiles.name}, 'UniformOutput', false); 
         [NewFiles.name] = deal(fullnames{:});
