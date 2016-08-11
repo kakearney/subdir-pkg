@@ -84,7 +84,7 @@ end
 % Search all folders
 %---------------------------
 
-pathstr = genpath(folder);
+pathstr = genpath_local(folder);
 pathfolders = regexp(pathstr, pathsep, 'split');  % Same as strsplit without the error checking
 pathfolders = pathfolders(~cellfun('isempty', pathfolders));  % Remove any empty cells
 
@@ -121,4 +121,31 @@ if nargout == 0
     end
 elseif nargout == 1
     varargout{1} = Files;
+end
+
+
+function [p] = genpath_local(d)
+% Modified genpath that doesn't ignore:
+%     - Folders named 'private'
+%     - MATLAB class folders (folder name starts with '@')
+%     - MATLAB package folders (folder name starts with '+')
+
+files = dir(d);
+if isempty(files)
+  return
+end
+p = '';  % Initialize output
+
+% Add d to the path even if it is empty.
+p = [p d pathsep];
+
+% Set logical vector for subdirectory entries in d
+isdir = logical(cat(1,files.isdir));
+dirs = files(isdir);  % Select only directory entries from the current listing
+
+for i=1:length(dirs)
+   dirname = dirs(i).name;
+   if    ~strcmp( dirname,'.') && ~strcmp( dirname,'..')
+       p = [p genpath(fullfile(d,dirname))];  % Recursive calling of this function.
+   end
 end
